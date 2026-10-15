@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AtliQ ContractIQ</title>
+    <style>
+      /* Shown only until React mounts, or permanently if the app cannot start (e.g. opened from disk). */
+      .boot { font: 15px/1.55 "Segoe UI", system-ui, sans-serif; max-width: 640px; margin: 12vh auto; padding: 0 20px; color: #17212b; }
+      .boot h1 { font-size: 20px; margin: 0 0 8px; color: #1e3a5f; }
+      .boot code { background: #eef1f4; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+      .boot ol { padding-left: 20px; }
+      .boot .hint { color: #5f6d7a; font-size: 13px; }
+      @media (prefers-color-scheme: dark) { body { background: #0f1720; } .boot { color: #e6edf3; } .boot h1 { color: #8fb4e3; } .boot code { background: #1f2a35; } .boot .hint { color: #9aa8b6; } }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot" id="boot">
+        <h1>AtliQ ContractIQ</h1>
+        <p id="boot-msg">Loading…</p>
+      </div>
+    </div>
+    <script>
+      // Plain (non-module) script: it still runs when this file is opened directly from disk, where the
+      // module bundle is blocked by the browser. It replaces the blank page with instructions.
+      (function () {
+        var msg = document.getElementById('boot-msg');
+        var how = '<ol><li>Double-click <code>Start ContractIQ.bat</code> in the <code>contractiq</code> folder, ' +
+          'or run <code>.venv\\Scripts\\python run.py</code> from that folder.</li>' +
+          '<li>Open <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a> in your browser.</li></ol>';
+        if (location.protocol === 'file:') {
+          msg.innerHTML = '<b>This page cannot be opened by double-clicking index.html.</b> ContractIQ is a React app ' +
+            'that gets its contracts, analysis and saved reviews from a local Python server, and browsers block ' +
+            'app scripts loaded from <code>file://</code>.' + how +
+            '<p class="hint">The server only listens on this computer (127.0.0.1); nothing is published.</p>';
+          return;
+        }
+        // Served over http but React never mounted (script failed to load or crashed): say so instead of a blank page.
+        setTimeout(function () {
+          if (document.getElementById('boot')) {
+            msg.innerHTML = '<b>The app did not start.</b> Try a hard refresh (Ctrl+F5). If it persists, rebuild the ' +
+              'frontend (<code>cd frontend</code>, <code>npm run build</code>) and restart the server.' + how;
+          }
+        }, 8000);
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
